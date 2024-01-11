@@ -28,18 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import classes.DiaryEntry
 import data.AddEntry
-import java.time.Instant
+import data.UpdateEntry
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EntryEditorScreen(navController: NavController, diaryEntry: DiaryEntry) {
-    var _diaryEntry by remember { mutableStateOf(diaryEntry) };
+fun EntryEditorScreen(navController: NavController, diaryEntry: DiaryEntry, updateEntry: Boolean) {
+    var _diaryEntry = diaryEntry;
 
     var title by remember { mutableStateOf(_diaryEntry.GetTitle()) };
     var comments by remember { mutableStateOf(_diaryEntry.GetComments()) };
     var startNo by remember { mutableIntStateOf(_diaryEntry.GetStartPageNo()) };
     var endNo by remember { mutableIntStateOf(_diaryEntry.GetEndPageNo()) };
-    var datePickerState = rememberDatePickerState(Instant.now().toEpochMilli());
+    var datePickerState = rememberDatePickerState(_diaryEntry.GetTimestamp());
 
     Surface(
         modifier = Modifier
@@ -76,12 +76,7 @@ fun EntryEditorScreen(navController: NavController, diaryEntry: DiaryEntry) {
                     OutlinedTextField(
                         label = { Text("Start Page No.") },
                         value = startNo.toString(),
-                        onValueChange = { text -> try {
-                            startNo = text.toInt();
-
-                        } catch (e: NumberFormatException) {
-
-                        } },
+                        onValueChange = { text -> startNo = text.toInt(); },
                         maxLines = 1
                     );
                 }
@@ -93,12 +88,7 @@ fun EntryEditorScreen(navController: NavController, diaryEntry: DiaryEntry) {
                     OutlinedTextField(
                         label = { Text("End Page No.") },
                         value = endNo.toString(),
-                        onValueChange = { text -> try {
-                            endNo = text.toInt();
-
-                        } catch (e: NumberFormatException) {
-
-                        } },
+                        onValueChange = { text -> endNo = text.toInt(); },
                         maxLines = 1
                     );
                 }
@@ -125,8 +115,11 @@ fun EntryEditorScreen(navController: NavController, diaryEntry: DiaryEntry) {
                         _diaryEntry.SetComments(comments);
                         _diaryEntry.SetStartPageNo(startNo)
                         _diaryEntry.SetEndPageNo(endNo);
-                        _diaryEntry.SetTimestamp(datePickerState.selectedDateMillis);
-                        AddEntry(_diaryEntry);
+                        _diaryEntry.SetTimestamp(datePickerState.selectedDateMillis!!);
+                        if (updateEntry)
+                            UpdateEntry(_diaryEntry.GetId(), _diaryEntry)
+                        else
+                            AddEntry(_diaryEntry);
                         navController.navigate("EntryListScreen");
                     },
                     shape = RoundedCornerShape(8.dp),

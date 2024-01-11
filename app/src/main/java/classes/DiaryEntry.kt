@@ -1,10 +1,8 @@
 package classes
 
-import data.sampleData
-
 class DiaryEntry {
     private var id: Int = -1;
-    private var timestamp: Long? = 0;
+    private var timestamp: Long = 0;
     private var title: String = "";
     private var startPageNo: Int = 0;
     private var endPageNo: Int = 0;
@@ -23,11 +21,15 @@ class DiaryEntry {
         return this.id;
     }
 
-    fun GetTimestamp(): Long? {
+    fun SetId(id: Int) {
+        this.id = id;
+    }
+
+    fun GetTimestamp(): Long {
         return timestamp;
     }
 
-    fun SetTimestamp(epochTime: Long?) {
+    fun SetTimestamp(epochTime: Long) {
         this.timestamp = epochTime;
     }
 
@@ -62,14 +64,4 @@ class DiaryEntry {
     fun SetComments(comments: String) {
         this.comments = comments.trim();
     }
-}
-
-fun NextEntryId(dataset: List<DiaryEntry>): Int {
-    var id: Int = 0;
-    for (item in dataset) if (item.GetId() > id) id = item.GetId();
-    return ++id;
-}
-
-fun GetEntryById(id: Int): DiaryEntry {
-    return sampleData[id];
 }

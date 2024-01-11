@@ -68,7 +68,7 @@ fun EntryListScreen(navController: NavController) {
                 .fillMaxSize()
         ) {
             ExtendedFloatingActionButton (
-                onClick = { navController.navigate("EntryEditorScreen/null") },
+                onClick = { navController.navigate("EntryEditorScreen/-1") },
                 modifier = Modifier
                     .padding(24.dp)
                     .align(Alignment.BottomEnd)

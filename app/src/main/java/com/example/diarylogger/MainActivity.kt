@@ -11,10 +11,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import classes.DiaryEntry
-import classes.GetEntryById
-import classes.NextEntryId
 import com.example.diarylogger.ui.theme.DiaryLoggerTheme
+import data.GetEntryById
+import data.NextEntryId
 import data.sampleData
+import java.time.Instant
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +36,11 @@ class MainActivity : ComponentActivity() {
                             navArgument("diaryEntryId") { type = NavType.IntType }
                         )
                     ) { backStackEntry ->
-                        var id = backStackEntry.arguments?.getInt("diaryEntryId");
-                        if (id != null)
-                            EntryEditorScreen(navController, diaryEntry = GetEntryById(id));
+                        var id = backStackEntry.arguments?.getInt("diaryEntryId")!!;
+                        if (id < 0)
+                            EntryEditorScreen(navController, diaryEntry = DiaryEntry(NextEntryId(sampleData), Instant.now().toEpochMilli(), "New Book", 0, 0, "No comments"), false);
                         else
-                            EntryEditorScreen(navController, diaryEntry = DiaryEntry(NextEntryId(sampleData), 0, "New Book", 0, 0, "No comments"));
+                            EntryEditorScreen(navController, diaryEntry = GetEntryById(id), true);
                     }
                 }
             }
