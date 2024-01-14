@@ -17,6 +17,11 @@ import data.NextEntryId
 import data.sampleData
 import java.time.Instant
 
+
+/*
+ * In case the video submission on cavnas is unavailable, here is a YouTube version
+ * https://youtu.be/11cK7kxxj-c
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
